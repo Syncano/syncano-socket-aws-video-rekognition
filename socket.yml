@@ -1,0 +1,88 @@
+name: aws-video-rekognition
+description: Amazon Rekognition video actions integration
+long_description: |
+  Visit link to know more about Amazon Rekognition videos ananlysis
+  https://docs.aws.amazon.com/rekognition/latest/dg/what-is.html
+version: 0.0.1
+
+keywords:
+  - aws
+  - comprehend
+  - NLP
+  - Natural Language Processing
+  - Key Phrases
+config:
+  AWS_REGION:
+    description: AWS region
+    long_description: >
+      Check link below for aws comprehend available regions
+      (https://docs.aws.amazon.com/comprehend/latest/dg/guidelines-and-limits.html)
+    required: true
+  AWS_SECRET_ACCESS_KEY:
+    description: AWS secret access key
+    long_description: |
+      Visit link to know more about managing keys
+      (http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html).
+    required: true
+  AWS_ACCESS_KEY_ID:
+    description: AWS access key id
+    long_description: |
+      Visit link to know more about managing keys
+      (http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html).
+    required: true
+
+endpoints:
+  create-collection:
+    description: Creates collection in an AWS Region
+    parameters:
+      CollectionId:
+        type: string
+        description: "ID for the collection that you are creating"
+        example: "Syncano"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "CollectionArn": "aws:rekognition:us-west-2:11111111111:collection/mycollection",
+              "FaceModelVersion": "2.0",
+              "StatusCode": 200
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ResourceAlreadyExistsException",
+              "message":"A collection with the specified ID already exists."
+            }
+  delete-collection:
+    description: Deletes the specified collection
+    parameters:
+      CollectionId:
+        type: string
+        description: "ID of the collection to delete"
+        example: "Syncano"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "StatusCode": 200
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "AccessDeniedException",
+              "message":"You are not authorized to perform the action."
+            }
