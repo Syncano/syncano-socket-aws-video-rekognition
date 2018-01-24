@@ -9,8 +9,8 @@ describe('create-collection', () => {
     run('create-collection', { args, config })
       .then((res) => {
         assert.propertyVal(res, 'code', 200);
-        assert.propertyVal(res, 'mimetype', 'application/json');
-        assert.propertyVal(res.data, 'statusCode', 200);
+        assert.property(res.data, 'CollectionArn');
+        assert.propertyVal(res.data, 'StatusCode', 200);
         done();
       })
       .catch((err) => {

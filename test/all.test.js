@@ -1,10 +1,15 @@
-import { expect, assert } from 'chai';
-
-const obj = { a: 24 };
-
-describe('check obj', () => {
-  it('obj should not be empty', () => {
-    expect(Object.keys(obj).length > 0).to.equal(true);
-    assert.propertyVal(obj, 'a', 24);
-  });
-});
+import './create-collection.test';
+import './delete-collection.test';
+import './list-collections.test';
+import './start-celebrity-recognition.test';
+import './get-celebrity-recognition.test';
+import './start-content-moderation.test';
+import './get-content-moderation.test';
+import './start-face-detection.test';
+import './get-face-detection.test';
+import './start-label-detection.test';
+import './get-label-detection.test';
+import './start-person-tracking.test';
+import './get-person-tracking.test';
+import './start-face-search.test';
+import './get-face-search.test';

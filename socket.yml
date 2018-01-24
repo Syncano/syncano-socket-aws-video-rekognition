@@ -7,10 +7,10 @@ version: 0.0.1
 
 keywords:
   - aws
-  - comprehend
-  - NLP
-  - Natural Language Processing
-  - Key Phrases
+  - Rekognition
+  - Video analysis
+  - Unsafe content detection
+  - Celebrity recognition
 config:
   AWS_REGION:
     description: AWS region
@@ -84,5 +84,635 @@ endpoints:
             {
               "statusCode": 400,
               "code": "AccessDeniedException",
-              "message":"You are not authorized to perform the action."
+              "message":"You are not authorized to perform the action"
+            }
+  list-collections:
+    description: Returns list of collection IDs in your account
+    parameters:
+      MaxResults:
+        type: number
+        description: "Maximum number of collection IDs to return. (Optional)"
+        example: 5
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "CollectionIds": [ "string" ],
+              "FaceModelVersions": [ "string" ],
+              "NextToken": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ResourceNotFoundException",
+              "message":"The collection id: nonExistingName does not exist"
+            }
+  start-label-detection:
+    description: Starts asynchronous detection of labels in a stored video
+    parameters:
+      Video:
+        type: object
+        description: "The video in which you want to detect labels. The video must be stored in an Amazon S3 bucket"
+        example: |
+          {
+            "S3Object": {
+              "Bucket": "string",
+              "Name": "string",
+              "Version": "string"
+            }
+          }
+      JobTag:
+        type: string
+        description: "Unique identifier you specify to identify the job in the completion status. (Optional)"
+        example: "my-job1"
+      MinConfidence:
+        type: number
+        description: "Minimum confidence that Rekognition Video must have in order to return a detected label, default is 50 (Optional)"
+        example: 30
+      ClientRequestToken:
+        type: string
+        description: "Idempotent token used to identify the start request. (Optional)"
+      NotificationChannel:
+        type: object
+        description: "Amazon SNS topic ARN you want Rekognition to publish the completion status of the label detection operation to (Optional)"
+        example: |
+          {
+            "RoleArn": "string",
+            "SNSTopicArn": "string"
+          }
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobId": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ValidationException",
+              "retryable": false
+            }
+  get-label-detection:
+    description: Gets the label detection results of a Rekognition Video analysis
+    parameters:
+      JobId:
+        type: string
+        description: "Job identifier for the label detection operation for which you want results returned"
+        example: "my-job12234678"
+      SortBy:
+        type: string
+        description: "Sort to use for elements in the Labels array. Sort by NAME or TIMESTAMP (Optional)"
+        example: "NAME"
+      MaxResults:
+        type: number
+        description: "Maximum number of collection IDs to return. (Optional)"
+        example: "5"
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobStatus": "string",
+              "Labels": [],
+              "NextToken": "string",
+              "StatusMessage": "string",
+              "VideoMetadata": {
+                "Codec": "string",
+                "DurationMillis": number,
+                "Format": "string",
+                "FrameHeight": number,
+                "FrameRate": number,
+                "FrameWidth": number
+              }
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "message": "Could not find JobId",
+              "code": "ResourceNotFoundException",
+              "statusCode": 400,
+            }
+  start-celebrity-recognition:
+    description: Starts asynchronous recognition of celebrities in a stored video
+    parameters:
+      Video:
+        type: object
+        description: "The video in which you want to recognize celebrities. The video must be stored in an Amazon S3 bucket"
+        example: |
+          {
+            "S3Object": {
+              "Bucket": "string",
+              "Name": "string",
+              "Version": "string"
+            }
+          }
+      JobTag:
+        type: string
+        description: "Unique identifier you specify to identify the job in the completion status. (Optional)"
+        example: "my-job1"
+      ClientRequestToken:
+        type: string
+        description: "Idempotent token used to identify the start request. (Optional)"
+      NotificationChannel:
+        type: object
+        description: "Amazon SNS topic ARN you want Rekognition to publish the completion status of the celebrity recognition analysis to (Optional)"
+        example: |
+          {
+            "RoleArn": "string",
+            "SNSTopicArn": "string"
+          }
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobId": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ValidationException",
+              "retryable": false
+            }
+  get-celebrity-recognition:
+    description: Gets the celebrity recognition results for a Rekognition Video analysis
+    parameters:
+      JobId:
+        type: string
+        description: "Job identifier for the required celebrity recognition analysis"
+        example: "my-job12234678"
+      SortBy:
+        type: string
+        description: "Sort to use for celebrities returned in Celebrities field. Sort by ID or TIMESTAMP (Optional)"
+        example: "TIMESTAMP"
+      MaxResults:
+        type: number
+        description: "Maximum number of celebrities you want Rekognition Video to return in the response. (Optional)"
+        example: "5"
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobStatus": "string",
+              "Celebrities": [],
+              "NextToken": "string",
+              "StatusMessage": "string",
+              "VideoMetadata": {
+                "Codec": "string",
+                "DurationMillis": number,
+                "Format": "string",
+                "FrameHeight": number,
+                "FrameRate": number,
+                "FrameWidth": number
+              }
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "message": "Could not find JobId",
+              "code": "ResourceNotFoundException",
+              "statusCode": 400,
+            }
+  start-content-moderation:
+    description: Starts asynchronous detection of explicit or suggestive adult content in a stored video
+    parameters:
+      Video:
+        type: object
+        description: "The video in which you want to moderate content. The video must be stored in an Amazon S3 bucket"
+        example: |
+          {
+            "S3Object": {
+              "Bucket": "string",
+              "Name": "string",
+              "Version": "string"
+            }
+          }
+      JobTag:
+        type: string
+        description: "Unique identifier you specify to identify the job in the completion status. (Optional)"
+        example: "my-job1"
+      ClientRequestToken:
+        type: string
+        description: "Idempotent token used to identify the start request. (Optional)"
+      MinConfidence:
+        type: number
+        description: "Minimum confidence that Rekognition Video must have in order to return a moderated content label. (Optional)"
+        example: 30
+      NotificationChannel:
+        type: object
+        description: "Amazon SNS topic ARN you want Rekognition to publish the completion status of the content moderation analysis to (Optional)"
+        example: |
+          {
+            "RoleArn": "string",
+            "SNSTopicArn": "string"
+          }
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobId": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ValidationException",
+              "retryable": false
+            }
+  get-content-moderation:
+    description: Gets the content moderation analysis results for a Rekognition Video analysis
+    parameters:
+      JobId:
+        type: string
+        description: "The identifier for the content moderation job"
+        example: "my-job12234678"
+      SortBy:
+        type: string
+        description: "Sort to use for elements in the ModerationLabelDetections array. Sort by NAME or TIMESTAMP (Optional)"
+        example: "TIMESTAMP"
+      MaxResults:
+        type: number
+        description: "Maximum number of content moderation labels to return. (Optional)"
+        example: "5"
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobStatus": "string",
+              "ModerationLabels": [],
+              "NextToken": "string",
+              "StatusMessage": "string",
+              "VideoMetadata": {
+                "Codec": "string",
+                "DurationMillis": number,
+                "Format": "string",
+                "FrameHeight": number,
+                "FrameRate": number,
+                "FrameWidth": number
+              }
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "message": "Could not find JobId",
+              "code": "ResourceNotFoundException",
+              "statusCode": 400,
+            }
+  start-face-detection:
+    description: Starts asynchronous detection of faces in a stored video
+    parameters:
+      Video:
+        type: object
+        description: "The video in which you want to detect faces. The video must be stored in an Amazon S3 bucket"
+        example: |
+          {
+            "S3Object": {
+              "Bucket": "string",
+              "Name": "string",
+              "Version": "string"
+            }
+          }
+      JobTag:
+        type: string
+        description: "Unique identifier you specify to identify the job in the completion status. (Optional)"
+        example: "my-job1"
+      FaceAttributes:
+        type: string
+        description: "The face attributes you want returned. Valid values are DEFAULT or ALL (Optional)"
+        example: "ALL"
+      ClientRequestToken:
+        type: string
+        description: "Idempotent token used to identify the start request. (Optional)"
+      NotificationChannel:
+        type: object
+        description: "Amazon SNS topic ARN you want Rekognition to publish the completion status of the face detection operation to (Optional)"
+        example: |
+          {
+            "RoleArn": "string",
+            "SNSTopicArn": "string"
+          }
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobId": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ValidationException",
+              "retryable": false
+            }
+  get-face-detection:
+    description: Gets the face detection results for a Rekognition Video analysis
+    parameters:
+      JobId:
+        type: string
+        description: "Unique identifier for the face detection job"
+        example: "my-job12234678"
+      MaxResults:
+        type: number
+        description: "Maximum number of detected faces to return. (Optional)"
+        example: "5"
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobStatus": "string",
+              "Faces": [],
+              "NextToken": "string",
+              "StatusMessage": "string",
+              "VideoMetadata": {
+                "Codec": "string",
+                "DurationMillis": number,
+                "Format": "string",
+                "FrameHeight": number,
+                "FrameRate": number,
+                "FrameWidth": number
+              }
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "message": "Could not find JobId",
+              "code": "ResourceNotFoundException",
+              "statusCode": 400,
+            }
+  start-person-tracking:
+    description: Starts the asynchronous tracking of persons in a stored video
+    parameters:
+      Video:
+        type: object
+        description: "The video in which you want to detect people. The video must be stored in an Amazon S3 bucket"
+        example: |
+          {
+            "S3Object": {
+              "Bucket": "string",
+              "Name": "string",
+              "Version": "string"
+            }
+          }
+      JobTag:
+        type: string
+        description: "Unique identifier you specify to identify the job in the completion status. (Optional)"
+        example: "my-job1"
+      ClientRequestToken:
+        type: string
+        description: "Idempotent token used to identify the start request. (Optional)"
+      NotificationChannel:
+        type: object
+        description: "Amazon SNS topic ARN you want Rekognition to publish the completion status of the people detection operation to (Optional)"
+        example: |
+          {
+            "RoleArn": "string",
+            "SNSTopicArn": "string"
+          }
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobId": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ValidationException",
+              "retryable": false
+            }
+  get-person-tracking:
+    description: Gets the person tracking results for a Rekognition Video analysis
+    parameters:
+      JobId:
+        type: string
+        description: "The identifier for a job that tracks persons in a video"
+        example: "my-job12234678"
+      SortBy:
+        type: string
+        description: "Sort to use for elements in the Persons array. Sort by INDEX or TIMESTAMP (Optional)"
+        example: "TIMESTAMP"
+      MaxResults:
+        type: number
+        description: "Maximum number of tracked persons to return. (Optional)"
+        example: "5"
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobStatus": "string",
+              "Persons": [],
+              "NextToken": "string",
+              "StatusMessage": "string",
+              "VideoMetadata": {
+                "Codec": "string",
+                "DurationMillis": number,
+                "Format": "string",
+                "FrameHeight": number,
+                "FrameRate": number,
+                "FrameWidth": number
+              }
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "message": "Could not find JobId",
+              "code": "ResourceNotFoundException",
+              "statusCode": 400,
+            }
+  start-face-search:
+    description: Starts the asynchronous search for faces in a collection that match the faces of persons detected in a stored video
+    parameters:
+      CollectionId:
+        type: string
+        description: "ID of the collection that contains the faces you want to search for"
+        example: "Syncano"
+      Video:
+        type: object
+        description: "The video you want to search. The video must be stored in an Amazon S3 bucket"
+        example: |
+          {
+            "S3Object": {
+              "Bucket": "string",
+              "Name": "string",
+              "Version": "string"
+            }
+          }
+      JobTag:
+        type: string
+        description: "Unique identifier you specify to identify the job in the completion status. (Optional)"
+        example: "my-job1"
+      FaceMatchThreshold:
+        type: number
+        description: "The minimum confidence in the person match to return (Optional)"
+        example: 70
+      ClientRequestToken:
+        type: string
+        description: "Idempotent token used to identify the start request. (Optional)"
+      NotificationChannel:
+        type: object
+        description: "Amazon SNS topic ARN you want Rekognition to publish the completion status of the search (Optional)"
+        example: |
+          {
+            "RoleArn": "string",
+            "SNSTopicArn": "string"
+          }
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobId": "string"
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "statusCode": 400,
+              "code": "ValidationException",
+              "retryable": false
+            }
+  get-face-search:
+    description: Gets the face search results for Rekognition Video face search
+    parameters:
+      JobId:
+        type: string
+        description: "The job identifer for the search request."
+        example: "my-job12234678"
+      SortBy:
+        type: string
+        description: "Sort to use for grouping faces in the response. Sort by INDEX or TIMESTAMP (Optional)"
+        example: "TIMESTAMP"
+      MaxResults:
+        type: number
+        description: "Maximum number of search results you want Rekognition Video to return in the response. (Optional)"
+        example: "20"
+      NextToken:
+        type: string
+        description: "Pagination token from the previous response. (Optional)"
+        example: "token"
+    response:
+      mimetype: application/json
+      examples:
+        -
+          exit_code: 200
+          description: Success
+          example: |
+            {
+              "JobStatus": "string",
+              "Persons": [],
+              "NextToken": "string",
+              "StatusMessage": "string",
+              "VideoMetadata": {
+                "Codec": "string",
+                "DurationMillis": number,
+                "Format": "string",
+                "FrameHeight": number,
+                "FrameRate": number,
+                "FrameWidth": number
+              }
+            }
+        -
+          exit_code: 400
+          description: Failed
+          example: |
+            {
+              "message": "Could not find JobId",
+              "code": "ResourceNotFoundException",
+              "statusCode": 400,
             }
