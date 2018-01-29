@@ -7,7 +7,7 @@ import config from './utils/helpers';
 describe('start-content-moderation', () => {
   const { TEST_BUCKET_NAME, TEST_VIDEO } = process.env;
 
-  it('should return valid JobId if parameters provided is valid', (done) => {
+  it('should return valid JobId if parameters provided are valid', (done) => {
     const args = {
       Video: {
         S3Object: {

@@ -5,9 +5,8 @@ import 'dotenv/config';
 import config from './utils/helpers';
 
 describe('get-person-tracking', () => {
-  const { TEST_VIDEO_JOB_ID } = process.env;
-
-  it('should return valid JobId if parameters provided is valid', (done) => {
+  it('should return person tracking results of video if input parameters are valid', (done) => {
+    const { TEST_VIDEO_JOB_ID } = process.env;
     const args = { JobId: TEST_VIDEO_JOB_ID, MaxResults: 10 };
     run('get-person-tracking', { args, config })
       .then((res) => {

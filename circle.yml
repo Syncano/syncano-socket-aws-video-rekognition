@@ -1,0 +1,26 @@
+machine:
+  node:
+    version: 8.9.0
+  environment:
+    PATH: "${PATH}:${HOME}/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+
+dependencies:
+  override:
+    - yarn global add syncano-cli@beta
+    - yarn install
+
+test:
+  override:
+    - yarn run test
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - syncano-cli deploy
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master

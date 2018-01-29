@@ -20,7 +20,7 @@ describe('list-collections', () => {
     (done) => {
       run('list-collections', { args: { MaxResults: 2 }, config })
         .then((res) => {
-          assert.propertyVal(res, 'code', 400);
+          assert.propertyVal(res, 'code', 200);
           assert.property(res.data, 'CollectionIds');
           assert.isAtMost(res.data.CollectionIds.length, 2);
           done();
@@ -32,7 +32,7 @@ describe('list-collections', () => {
 
   it('should return "InvalidPaginationTokenException" error if nextTokens parameter is invalid',
     (done) => {
-      run('list-collections', { args: { NextTokens: 'ssjskjskjsd' }, config })
+      run('list-collections', { args: { NextToken: 'ssjskjskjsd' }, config })
         .then((res) => {
           assert.propertyVal(res, 'code', 400);
           assert.property(res.data, 'message');

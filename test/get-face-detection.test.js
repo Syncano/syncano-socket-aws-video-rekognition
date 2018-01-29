@@ -5,15 +5,13 @@ import 'dotenv/config';
 import config from './utils/helpers';
 
 describe('get-face-detection', () => {
-  const { TEST_VIDEO_JOB_ID } = process.env;
-
-  it('should return valid JobId if parameters provided is valid', (done) => {
+  it('should return face detection results of video if input parameters are valid', (done) => {
+    const { TEST_VIDEO_JOB_ID } = process.env;
     const args = { JobId: TEST_VIDEO_JOB_ID, MaxResults: 10 };
     run('get-face-detection', { args, config })
       .then((res) => {
         assert.propertyVal(res, 'code', 200);
         assert.property(res.data, 'JobStatus');
-        assert.property(res.data, 'VideoMetadata');
         assert.isArray(res.data.Faces);
         done();
       })

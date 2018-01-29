@@ -7,7 +7,7 @@ import config from './utils/helpers';
 describe('start-face-search', () => {
   const { TEST_BUCKET_NAME, TEST_VIDEO, SEARCH_COLLECTION } = process.env;
 
-  it('should return valid JobId if parameters provided is valid', (done) => {
+  it('should return valid JobId if parameters provided are valid', (done) => {
     const args = {
       CollectionId: SEARCH_COLLECTION,
       FaceMatchThreshold: 60,
@@ -30,7 +30,7 @@ describe('start-face-search', () => {
       });
   });
 
-  it('should return "ValidationException" error if CollectionId is not sent as parameter',
+  it('should return "MissingRequiredParameter" error if CollectionId is not sent as parameter',
     (done) => {
       const invalidArgs = {
         Video: {
@@ -44,7 +44,7 @@ describe('start-face-search', () => {
         .then((res) => {
           assert.propertyVal(res, 'code', 400);
           assert.property(res.data, 'message');
-          assert.propertyVal(res.data, 'code', 'ValidationException');
+          assert.propertyVal(res.data, 'code', 'MissingRequiredParameter');
           done();
         })
         .catch((err) => {

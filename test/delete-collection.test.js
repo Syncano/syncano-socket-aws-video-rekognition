@@ -10,7 +10,7 @@ describe('delete-collection', () => {
       .then((res) => {
         assert.propertyVal(res, 'code', 200);
         assert.propertyVal(res, 'mimetype', 'application/json');
-        assert.propertyVal(res.data, 'statusCode', 200);
+        assert.propertyVal(res.data, 'StatusCode', 200);
         done();
       })
       .catch((err) => {

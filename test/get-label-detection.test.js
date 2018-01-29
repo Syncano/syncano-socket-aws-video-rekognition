@@ -5,22 +5,21 @@ import 'dotenv/config';
 import config from './utils/helpers';
 
 describe('get-label-detection', () => {
-  const { TEST_VIDEO_JOB_ID } = process.env;
-
-  it('should return valid JobId if parameters provided is valid', (done) => {
-    const args = { JobId: TEST_VIDEO_JOB_ID, MaxResults: 10 };
-    run('get-label-detection', { args, config })
-      .then((res) => {
-        assert.propertyVal(res, 'code', 200);
-        assert.property(res.data, 'JobStatus');
-        assert.property(res.data, 'VideoMetadata');
-        assert.isArray(res.data.Labels);
-        done();
-      })
-      .catch((err) => {
-        done(err);
-      });
-  });
+  it('should return label detection results of video if input parameters are valid',
+    (done) => {
+      const { TEST_VIDEO_JOB_ID } = process.env;
+      const args = { JobId: TEST_VIDEO_JOB_ID, MaxResults: 10 };
+      run('get-label-detection', { args, config })
+        .then((res) => {
+          assert.propertyVal(res, 'code', 200);
+          assert.property(res.data, 'JobStatus');
+          assert.isArray(res.data.Labels);
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+    });
 
   it('should return "ResourceNotFoundException" if JobId not found',
     (done) => {

@@ -12,7 +12,7 @@
     ]
   },
   "scripts": {
-    "test:e2e": "cross-env NODE_ENV=test nyc --reporter=html mocha --opts ./test/utils/mocha.opts ./test/*.test.js",
+    "test:e2e": "cross-env NODE_ENV=test nyc --reporter=html mocha --opts ./test/utils/mocha.opts ./test/all.test.js",
     "test": "npm run lint && npm run test:e2e && nyc report",
     "lint": "esw src test"
   },
