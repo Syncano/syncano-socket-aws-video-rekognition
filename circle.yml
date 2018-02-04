@@ -17,7 +17,10 @@ deployment:
   production:
     branch: master
     commands:
-      - syncano-cli deploy
+      - syncano-cli submit ${SOCKET_NAME} -b patch
+      - syncano-cli publish ${SOCKET_NAME}
+      - git config --global user.email $GITHUB_EMAIL && git config --global user.name $GITHUB_NAME
+      - git commit -a -m "Bumping version [ci skip]" && git push origin $CIRCLE_BRANCH
 
 experimental:
   notify:
