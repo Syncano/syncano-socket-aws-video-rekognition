@@ -1,5 +1,7 @@
 # aws-video-rekognition
 
+[![CircleCI](https://circleci.com/gh/Syncano/syncano-socket-aws-video-rekognition.svg?style=svg)](https://circleci.com/gh/Syncano/syncano-socket-aws-video-rekognition)
+
 `version:` **0.0.1**
 
 Amazon Rekognition video actions integration
