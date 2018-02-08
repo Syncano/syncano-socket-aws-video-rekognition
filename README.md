@@ -642,3 +642,19 @@ mimetype: `application/json`
   "statusCode": 400,
 }
 ```
+
+### Contributing
+
+#### How to Contribute
+  * Fork this repository
+  * Clone from your fork
+  * Make your contributions (Make sure your work is well tested)
+  * Create Pull request from the fork to this repo
+
+#### Setting up environment variables
+  * Create a `.env` on parent folder
+  * Copy contents of `.env-sample` file to newly created `.env` file and assign appropriate values to the listed variables.
+
+#### Testing
+  * Ensure all your test are written on the `test` directory
+  * Use the command `npm test` to run test
