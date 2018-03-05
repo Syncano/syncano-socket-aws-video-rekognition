@@ -5,7 +5,7 @@ import config from './utils/helpers';
 describe('delete-collection', () => {
   const args = { CollectionId: 'collectionRekognitionTest' };
 
-  it('should delete collection if valid collectionId parameter is valid', (done) => {
+  it('should delete collection if collectionId parameter is valid', (done) => {
     run('delete-collection', { args, config })
       .then((res) => {
         assert.propertyVal(res, 'code', 200);

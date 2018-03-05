@@ -7,9 +7,8 @@ export default async (ctx) => {
   try {
     const result = await callEndpoint('startLabelDetection', ctx.args, ctx.config);
     const { statusCode, data } = result;
-    response.json(data, statusCode);
-  } catch (err) {
-    const { statusCode, error } = err;
-    response.json(error, statusCode);
+    return response.json(data, statusCode);
+  } catch ({ statusCode, error }) {
+    return response.json(error, statusCode);
   }
 };

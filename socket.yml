@@ -33,6 +33,7 @@ config:
 
 endpoints:
   create-collection:
+    private: true
     description: Creates collection in an AWS Region
     parameters:
       CollectionId:
@@ -61,6 +62,7 @@ endpoints:
               "message":"A collection with the specified ID already exists."
             }
   delete-collection:
+    private: true
     description: Deletes the specified collection
     parameters:
       CollectionId:
@@ -87,6 +89,7 @@ endpoints:
               "message":"You are not authorized to perform the action"
             }
   list-collections:
+    private: true
     description: Returns list of collection IDs in your account
     parameters:
       MaxResults:

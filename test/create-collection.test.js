@@ -3,6 +3,7 @@ import { run } from 'syncano-test';
 import config from './utils/helpers';
 
 describe('create-collection', () => {
+  // const meta = generateMeta('create-collection');
   const args = { CollectionId: 'collectionRekognitionTest' };
 
   it('should create collection if valid collectionId parameter supplied', (done) => {

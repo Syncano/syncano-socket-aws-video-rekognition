@@ -6,11 +6,9 @@ export default async (ctx) => {
   const { CollectionId } = ctx.args;
 
   try {
-    const result = await callEndpoint('deleteCollection', { CollectionId }, ctx.config);
-    const { statusCode, data } = result;
-    response.json(data, statusCode);
-  } catch (err) {
-    const { statusCode, error } = err;
-    response.json(error, statusCode);
+    const { statusCode, data } = await callEndpoint('deleteCollection', { CollectionId }, ctx.config);
+    return response.json(data, statusCode);
+  } catch ({ statusCode, error }) {
+    return response.json(error, statusCode);
   }
 };
