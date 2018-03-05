@@ -1,0 +1,81 @@
+version: 2
+jobs:
+  build:
+    name: Build
+    docker:
+      - image: circleci/node:8.9.0
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v6-dependencies-{{ checksum "package.json" }}
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v6-dependencies-{{ checksum "package.json" }}
+
+      - save_cache:
+          key: v6-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/repo
+
+  test:
+    name: Tests
+    docker:
+      - image: circleci/node:8.9.0
+
+    working_directory: ~/repo
+
+    steps:
+      - restore_cache:
+          key: v6-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run: npm run test
+
+      - store_artifacts:
+          path: ~/repo/test/.results
+          destination: results
+
+  deploy:
+    name: Deploy
+    docker:
+      - image: circleci/node:8.9.0
+
+    working_directory: ~/repo
+
+    steps:
+      - restore_cache:
+          key: v6-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - add_ssh_keys:
+          fingerprints:
+            - "1f:22:76:e3:e3:47:58:a1:28:a4:9c:0b:a0:eb:04:a1"
+      - run: sudo npm install syncano-cli@0.55.0 -g
+      - run: SYNCANO_AUTH_KEY=$SYNCANO_AUTH_KEY SYNCANO_HOST=api.syncano.io syncano-cli submit ${SOCKET_NAME} -b patch
+      - run: SYNCANO_AUTH_KEY=$SYNCANO_AUTH_KEY SYNCANO_HOST=api.syncano.io syncano-cli publish ${SOCKET_NAME}
+      - run:
+          name: Avoid hosts unknown for github
+          command: mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - run: git config --global user.email $GITHUB_EMAIL && git config --global user.name $GITHUB_NAME
+      - run: git commit -a -m "Bumping version [ci skip]" && echo 'yes' | git push origin $CIRCLE_BRANCH
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master

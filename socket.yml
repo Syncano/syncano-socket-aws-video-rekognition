@@ -3,7 +3,7 @@ description: Amazon Rekognition video actions integration
 long_description: |
   Visit link to know more about Amazon Rekognition videos ananlysis
   https://docs.aws.amazon.com/rekognition/latest/dg/what-is.html
-version: 0.0.1
+version: 0.0.5
 
 keywords:
   - aws
