@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { run } from 'syncano-test';
+import { run } from '@syncano/test';
 import 'dotenv/config';
 
 import config from './utils/helpers';
