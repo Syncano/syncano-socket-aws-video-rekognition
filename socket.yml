@@ -3,7 +3,7 @@ description: Amazon Rekognition video actions integration
 long_description: |
   Visit link to know more about Amazon Rekognition videos ananlysis
   https://docs.aws.amazon.com/rekognition/latest/dg/what-is.html
-version: 0.0.6
+version: 0.0.7
 keywords:
   - aws
   - Rekognition
@@ -71,7 +71,6 @@ endpoints:
                   "code": "ResourceAlreadyExistsException",
                   "message":"A collection with the specified ID already exists."
                 }
-
   delete-collection:
     private: true
     description: Deletes the specified collection
@@ -109,7 +108,6 @@ endpoints:
                   "code": "AccessDeniedException",
                   "message":"You are not authorized to perform the action"
                 }
-
   list-collections:
     private: true
     description: Returns list of collection IDs in your account
@@ -153,7 +151,6 @@ endpoints:
                   "code": "ResourceNotFoundException",
                   "message":"The collection id: nonExistingName does not exist"
                 }
-
   start-label-detection:
     description: Starts asynchronous detection of labels in a stored video
     inputs:
@@ -161,8 +158,8 @@ endpoints:
         Video:
           type: object
           description: >-
-            The video in which you want to detect labels. The video must be stored
-            in an Amazon S3 bucket
+            The video in which you want to detect labels. The video must be
+            stored in an Amazon S3 bucket
           example: |
             {
               "S3Object": {
@@ -180,8 +177,8 @@ endpoints:
         MinConfidence:
           type: number
           description: >-
-            Minimum confidence that Rekognition Video must have in order to return
-            a detected label, default is 50 (Optional)
+            Minimum confidence that Rekognition Video must have in order to
+            return a detected label, default is 50 (Optional)
           example: 30
         ClientRequestToken:
           type: string
@@ -224,7 +221,6 @@ endpoints:
                   "code": "ValidationException",
                   "retryable": false
                 }
-
   get-label-detection:
     description: Gets the label detection results of a Rekognition Video analysis
     inputs:
@@ -288,7 +284,6 @@ endpoints:
                   "code": "ResourceNotFoundException",
                   "statusCode": 400,
                 }
-
   start-celebrity-recognition:
     description: Starts asynchronous recognition of celebrities in a stored video
     inputs:
@@ -353,7 +348,6 @@ endpoints:
                   "code": "ValidationException",
                   "retryable": false
                 }
-
   get-celebrity-recognition:
     description: Gets the celebrity recognition results for a Rekognition Video analysis
     inputs:
@@ -365,14 +359,14 @@ endpoints:
         SortBy:
           type: string
           description: >-
-            Sort to use for celebrities returned in Celebrities field. Sort by ID
-            or TIMESTAMP (Optional)
+            Sort to use for celebrities returned in Celebrities field. Sort by
+            ID or TIMESTAMP (Optional)
           example: TIMESTAMP
         MaxResults:
           type: number
           description: >-
-            Maximum number of celebrities you want Rekognition Video to return in
-            the response. (Optional)
+            Maximum number of celebrities you want Rekognition Video to return
+            in the response. (Optional)
           example: '5'
         NextToken:
           type: string
@@ -417,7 +411,6 @@ endpoints:
                   "code": "ResourceNotFoundException",
                   "statusCode": 400,
                 }
-
   start-content-moderation:
     description: >-
       Starts asynchronous detection of explicit or suggestive adult content in a
@@ -449,8 +442,8 @@ endpoints:
         MinConfidence:
           type: number
           description: >-
-            Minimum confidence that Rekognition Video must have in order to return
-            a moderated content label. (Optional)
+            Minimum confidence that Rekognition Video must have in order to
+            return a moderated content label. (Optional)
           example: 30
         NotificationChannel:
           type: object
@@ -490,7 +483,6 @@ endpoints:
                   "code": "ValidationException",
                   "retryable": false
                 }
-
   get-content-moderation:
     description: >-
       Gets the content moderation analysis results for a Rekognition Video
@@ -504,8 +496,8 @@ endpoints:
         SortBy:
           type: string
           description: >-
-            Sort to use for elements in the ModerationLabelDetections array. Sort
-            by NAME or TIMESTAMP (Optional)
+            Sort to use for elements in the ModerationLabelDetections array.
+            Sort by NAME or TIMESTAMP (Optional)
           example: TIMESTAMP
         MaxResults:
           type: number
@@ -554,7 +546,6 @@ endpoints:
                   "code": "ResourceNotFoundException",
                   "statusCode": 400,
                 }
-
   start-face-detection:
     description: Starts asynchronous detection of faces in a stored video
     inputs:
@@ -562,8 +553,8 @@ endpoints:
         Video:
           type: object
           description: >-
-            The video in which you want to detect faces. The video must be stored
-            in an Amazon S3 bucket
+            The video in which you want to detect faces. The video must be
+            stored in an Amazon S3 bucket
           example: |
             {
               "S3Object": {
@@ -581,8 +572,8 @@ endpoints:
         FaceAttributes:
           type: string
           description: >-
-            The face attributes you want returned. Valid values are DEFAULT or ALL
-            (Optional)
+            The face attributes you want returned. Valid values are DEFAULT or
+            ALL (Optional)
           example: ALL
         ClientRequestToken:
           type: string
@@ -625,7 +616,6 @@ endpoints:
                   "code": "ValidationException",
                   "retryable": false
                 }
-
   get-face-detection:
     description: Gets the face detection results for a Rekognition Video analysis
     inputs:
@@ -681,7 +671,6 @@ endpoints:
                   "code": "ResourceNotFoundException",
                   "statusCode": 400,
                 }
-
   start-person-tracking:
     description: Starts the asynchronous tracking of persons in a stored video
     inputs:
@@ -689,8 +678,8 @@ endpoints:
         Video:
           type: object
           description: >-
-            The video in which you want to detect people. The video must be stored
-            in an Amazon S3 bucket
+            The video in which you want to detect people. The video must be
+            stored in an Amazon S3 bucket
           example: |
             {
               "S3Object": {
@@ -746,7 +735,6 @@ endpoints:
                   "code": "ValidationException",
                   "retryable": false
                 }
-
   get-person-tracking:
     description: Gets the person tracking results for a Rekognition Video analysis
     inputs:
@@ -808,7 +796,6 @@ endpoints:
                   "code": "ResourceNotFoundException",
                   "statusCode": 400,
                 }
-
   start-face-search:
     description: >-
       Starts the asynchronous search for faces in a collection that match the
@@ -822,8 +809,8 @@ endpoints:
         Video:
           type: object
           description: >-
-            The video you want to search. The video must be stored in an Amazon S3
-            bucket
+            The video you want to search. The video must be stored in an Amazon
+            S3 bucket
           example: |
             {
               "S3Object": {
@@ -883,7 +870,6 @@ endpoints:
                   "code": "ValidationException",
                   "retryable": false
                 }
-
   get-face-search:
     description: Gets the face search results for Rekognition Video face search
     inputs:
@@ -901,8 +887,8 @@ endpoints:
         MaxResults:
           type: number
           description: >-
-            Maximum number of search results you want Rekognition Video to return
-            in the response. (Optional)
+            Maximum number of search results you want Rekognition Video to
+            return in the response. (Optional)
           example: '20'
         NextToken:
           type: string
