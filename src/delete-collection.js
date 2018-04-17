@@ -1,8 +1,8 @@
-import Syncano from 'syncano-server';
+import Syncano from '@syncano/core';
 import callEndpoint from './utils/helpers';
 
 export default async (ctx) => {
-  const { response } = Syncano(ctx);
+  const { response } = new Syncano(ctx);
   const { CollectionId } = ctx.args;
 
   try {
